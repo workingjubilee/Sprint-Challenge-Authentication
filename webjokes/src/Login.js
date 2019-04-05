@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function Login(props) {
+function Login({ history, ...moduloProps}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [newUser, setNewUser] = useState(false);
@@ -24,8 +24,8 @@ function Login(props) {
 
     if (thePost.data.token) {
       localStorage.setItem('token', thePost.data.token);
+      history.push('/jokes');
     }
-
   }
 }
 
