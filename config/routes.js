@@ -5,6 +5,7 @@ const db = require('../database/dbConfig.js');
 
 const { authenticate } = require('../auth/authenticate');
 
+// knex functions
 function findByUsername(username) {
   return db('users').where(username).first();
 }
@@ -12,7 +13,6 @@ function findByUsername(username) {
 function add(user) {
   return db('users').insert(user);
 }
-
 
 function generateToken(user) {
   const payload = {
@@ -26,17 +26,6 @@ function generateToken(user) {
 
   return jwt.sign(payload, secret, options);  
 }
-
-
-// - [ ] Implement the `register` function inside `/config/routes.js`.
-  // Yes.
-// - [ ] Implement the `login` function inside `/config/routes.js`.
-  // Yes.
-// - [ ] Use JSON Web Tokens for authentication.
-  // JSON WEB TOKEN REQUIRES:
-  // GENERATION FUNCTION - yes
-  // VERIFICATION FUNCTION - yes?
-
 
 module.exports = server => {
   server.post('/api/register', register);
@@ -55,12 +44,16 @@ async function register(req, res) {
       let hash = bcrypt.hashSync(password, 13);
       password = hash;
 
-      let newUser = await add({ username, password });
+      let id = await add({ username, password });
+      if (id > 0) {
+        const newUser = await findByUsername({ username });
+        const token = generateToken(newUser);
 
-      res.status(200).json({ 
-        message: "You've successfully registered!",
-        newUser
-      })
+        res.status(200).json({ 
+          message: "You've successfully registered!",
+          token
+        })
+      }
     } catch(error) {
       res.status(500).json({ message: "Register machine broke." })
     } // layer 2
@@ -70,24 +63,16 @@ async function register(req, res) {
 async function login(req, res) {
   const user = req.body;
   let { username, password } = req.body;
-  console.log(user, username, password)
 
   if (!username || !password) {
     res.status(400).json({ message: "You need both a username and password to log in." })
   } else {
-    console.log("Layer 1.")
 
     try {
-      console.log("Layer 2.")
       let matchUser = await findByUsername({ username });
 
-      console.log(matchUser);
-
       if (bcrypt.compareSync(password, matchUser.password)) {
-        console.log("Layer 3.")
         const token = generateToken(user);
-        console.log(token);
-
 
         res.status(200).json({
           message: "Welcome!",

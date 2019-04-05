@@ -34,7 +34,7 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 2. What does bcrypt do to help us store passwords in a secure manner.
 
-  Bcrypt is a hashing method which procedurally and erratically alters the data in a difficult-to-reverse fashion, thus making it far more challenging to simply work back from the hash to the password.
+  Bcrypt is a hashing method which procedurally and erratically (deterministic but random-seeming? so that strings don't match) alters the data in a difficult-to-reverse fashion, thus making it far more challenging to simply work back from the hash to the password.
 
 3. What does bcrypt do to slow down attackers?
 
