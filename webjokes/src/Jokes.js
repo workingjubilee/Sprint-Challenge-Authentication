@@ -7,7 +7,7 @@ function Jokes(props) {
 
   useEffect(
     () => {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhvcGUiLCJpYXQiOjE1NTQ0ODI3MTcsImV4cCI6MTU1NDU2OTExN30.pR3FdHzoM3z0PysxWnGqGEKyi4DduYOgMEZpYPrRlek";
+      const token = localStorage.getItem('token')
       const jokeGrab = async () => {
         let theJokes = await axios.get('http://localhost:7777/api/jokes', { headers: {
           Authorization: `${token}`

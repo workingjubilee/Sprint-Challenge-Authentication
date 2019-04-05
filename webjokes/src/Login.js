@@ -14,13 +14,18 @@ function Login(props) {
       <button type="submit">Login</button>
   </form>);
 
-  function submitUser(event) {
+  async function submitUser(event) {
     event.preventDefault();
     const user = { username, password };
 
     const route = newUser ? 'register' : 'login'
 
-    axios.post(`http://localhost:7777/api/${route}`, user);
+    let thePost = await axios.post(`http://localhost:7777/api/${route}`, user);
+
+    if (thePost.data.token) {
+      localStorage.setItem('token', thePost.data.token);
+    }
+
   }
 }
 
