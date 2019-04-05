@@ -23,6 +23,8 @@ function generateToken(user) {
   const options = {
     expiresIn: '1d',
   }
+
+  return jwt.sign(payload, secret, options);  
 }
 
 
@@ -84,6 +86,7 @@ async function login(req, res) {
       if (bcrypt.compareSync(password, matchUser.password)) {
         console.log("Layer 3.")
         const token = generateToken(user);
+        console.log(token);
 
 
         res.status(200).json({
