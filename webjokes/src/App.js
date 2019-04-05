@@ -1,28 +1,32 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Route, NavLink } from 'react-router-dom';
+import Login from './Login.js';
+import Jokes from './Jokes.js';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+function App(props){
+  return (
+    <>
+      <header>
+        <NavLink to="/">Nowhere</NavLink>
+        <NavLink to="/login">Login</NavLink>
+        <NavLink to="/jokes">Jokes</NavLink>
+        <button onClick={logout}>Logout</button>
+      </header>
+      <main>
+        <Route exact path="/" component={Nowhere} />
+        <Route path="/login" component={Login} />
+        <Route path="/jokes" component={Jokes} />
+      </main>
+    </>
+  );
+
+  function logout() {
+    localStorage.removeItem('token');
+  };
+}
+
+function Nowhere(props) {
+  return <h1>...</h1>;
 }
 
 export default App;
