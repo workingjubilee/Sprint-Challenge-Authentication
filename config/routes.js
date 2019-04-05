@@ -6,7 +6,7 @@ const db = require('../database/dbConfig.js');
 const { authenticate } = require('../auth/authenticate');
 
 function findByUsername(username) {
-  return db('users').select('username').where(username);
+  return db('users').where(username).first();
 }
 
 function add(user) {
@@ -27,13 +27,13 @@ function generateToken(user) {
 
 
 // - [ ] Implement the `register` function inside `/config/routes.js`.
-  // Yes? Needs DB model actions.
+  // Yes.
 // - [ ] Implement the `login` function inside `/config/routes.js`.
-  // Yes? Needs DB model actions.
+  // Yes.
 // - [ ] Use JSON Web Tokens for authentication.
   // JSON WEB TOKEN REQUIRES:
   // GENERATION FUNCTION - yes
-  // VERIFICATION FUNCTION - maybe?
+  // VERIFICATION FUNCTION - yes?
 
 
 module.exports = server => {
@@ -67,17 +67,24 @@ async function register(req, res) {
 
 async function login(req, res) {
   const user = req.body;
-  let { username, password } = user;
+  let { username, password } = req.body;
+  console.log(user, username, password)
 
   if (!username || !password) {
     res.status(400).json({ message: "You need both a username and password to log in." })
   } else {
+    console.log("Layer 1.")
 
     try {
-      let matchUser = await findByUsername(username);
+      console.log("Layer 2.")
+      let matchUser = await findByUsername({ username });
+
+      console.log(matchUser);
 
       if (bcrypt.compareSync(password, matchUser.password)) {
+        console.log("Layer 3.")
         const token = generateToken(user);
+
 
         res.status(200).json({
           message: "Welcome!",
