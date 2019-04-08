@@ -29,9 +29,20 @@ Implement an User Authentication System in order to access the jokes from the Jo
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 1. What is the purpose of using _sessions_?
-1. What does bcrypt do to help us store passwords in a secure manner.
-1. What does bcrypt do to slow down attackers?
-1. What are the three parts of the JSON Web Token?
+
+  Sessions are a way of tracking user data on the server side so that we can know whether or not a person has previously verified their identity with us, allowing us to skip them sending their username and password to us every time.
+
+2. What does bcrypt do to help us store passwords in a secure manner.
+
+  Bcrypt is a hashing method which procedurally and erratically (deterministic but random-seeming? so that strings don't match) alters the data in a difficult-to-reverse fashion, thus making it far more challenging to simply work back from the hash to the password.
+
+3. What does bcrypt do to slow down attackers?
+
+  Due to a complex bit of information theory, the encryption process is essentially "one-way". It isn't really actually impossible to reverse, and you can generate (and thus match) the hash much more easily if you have some of the other parts that went into the cipher that made it, allowing our server to do so easily when it has the user's password in hand. However, it is so challenging to undo if you don't have all those parts that even a millionaire thief who sinks most of their money into buying up specialized hardware to perform billions of hashes every minute will only get so many passwords every day, securing most of your database against a brute force attack until you've found a way to make the hashed data useless (probably by changing your secret, upping your hash iterations a little, and making everyone change their passwords!).
+
+4. What are the three parts of the JSON Web Token?
+
+  The header, payload, and signature, which are going to be tags identifying a hashing algorithm, some claims we've made about who the token is from and who it is for, and everything hashed with a secret.
 
 ## Project Set Up
 
